@@ -35,6 +35,12 @@ public class Main {
                 });
 
 
+        System.out.println("\n\n\nall errors in range of 400:");
+        data.stream()
+                .filter((String str) -> {
+                    int temp = str.charAt(0);
+                    return temp == 52;
+                }).forEach(n -> System.out.println(n));
 
     }
 }
