@@ -5,8 +5,14 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Main {
+    public static int[] convertStreamToArray(Stream<Integer> stream)
+    {
+        return stream.mapToInt(Integer::intValue).toArray();
+    }
+
     public static void main(String[] args) throws Exception {
 
         File file = new File("E:\\Programming\\neshan\\java\\task\\stream_api\\streamApi\\src\\err.txt");
@@ -52,5 +58,26 @@ public class Main {
 
 
 
+
+        int[] arr = convertStreamToArray(data.stream().map((String str) -> {
+            return Integer.parseInt(str.substring(0, 3));
+        }));
+        int[] cpe = new int[200];
+        double sum = 0;
+        double count = 0;
+        for (int i = 0; i < arr.length; i++) {
+            cpe[arr[i] - 400]++;
+        }
+
+        for (int i = 0; i < cpe.length; i++) {
+            sum += cpe[i];
+            if(cpe[i] != 0)
+                count++;
+        }
+
+        System.out.println("The Average count for all errors is: " + sum/count);
+
+
     }
+
 }
