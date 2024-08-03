@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -41,6 +42,15 @@ public class Main {
                     int temp = str.charAt(0);
                     return temp == 52;
                 }).forEach(n -> System.out.println(n));
+
+
+        System.out.println("\n\n\nError Codes Count:");
+        data.stream().forEach((String str) -> {
+            long count = data.stream().filter(num -> num.substring(0, 4).equals(str.substring(0, 4))).count();
+            System.out.println("Number of " + str.substring(0, 4) + ": " + count);
+        });
+
+
 
     }
 }
