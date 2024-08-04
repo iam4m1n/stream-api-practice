@@ -31,7 +31,7 @@ public class Main {
             data.add(new Error(Integer.parseInt(result.split(" ")[0]), result.split(" ")[1]));
         }
 
-        System.out.println("\n\nList of all responses:\n");
+        System.out.println("\n\nList of all responses:");
         List<String> task1 = data.stream()
                 .distinct()
                 .map( n -> n.errorDetail).collect(Collectors.toList());
@@ -39,7 +39,7 @@ public class Main {
         System.out.println(task1);
 
 
-        System.out.println("\n\n\nall errors in range of 400:\n");
+        System.out.println("\n\n\nall errors in range of 400:");
         List<Integer> task2 = data.stream()
                 .filter(err -> err.errorNumber > 399 && err.errorNumber<500)
                 .map(n -> n.errorNumber)
@@ -50,12 +50,27 @@ public class Main {
 
 
 
-        System.out.println("\n\n\nError Codes Count:\n");
+        System.out.println("\n\n\nError Codes Count:");
 
         Map<Integer, Long> itemCount = data.stream().distinct()
                 .collect(Collectors.groupingBy(e -> e.errorNumber, Collectors.counting()));
 
         itemCount.forEach((k, c) -> System.out.println("Number of " + k + " : " + c));
+
+
+
+
+
+
+        System.out.println("\n\n\nSorting all code errors by count:");
+        itemCount.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(n -> System.out.print(n + ", "));
+
+
+
+        
+
 
 
         double all = itemCount.values().stream().mapToInt(Long::intValue).sum();
@@ -65,7 +80,7 @@ public class Main {
 
         System.out.println("\n\n\nThe Average count for all errors is: " + Avg);
 
-        System.out.println("\nList of all errors above avg:\n");
+        System.out.println("\nList of all errors above avg:");
 
         List <Integer> task5 = itemCount.entrySet()
                 .stream().
@@ -77,7 +92,7 @@ public class Main {
         System.out.println(task5);
 
 
-        System.out.println("\n\n\nErrors in range of 400:\n");
+        System.out.println("\n\n\nErrors in range of 400:");
         List<String> task400Range = data.stream()
                 .filter(n -> n.errorNumber > 399 && n.errorNumber < 500)
                 .map( n -> n.errorDetail)
@@ -87,7 +102,7 @@ public class Main {
 
 
 
-        System.out.println("\n\n\nErrors in range of 500:\n");
+        System.out.println("\n\n\nErrors in range of 500:");
         List<String> task500Range = data.stream()
                 .filter(n -> n.errorNumber > 499 && n.errorNumber < 600)
                 .map( n -> n.errorDetail)
