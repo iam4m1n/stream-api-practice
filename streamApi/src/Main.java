@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -36,6 +37,7 @@ public class Main {
                     int ascii =  str.charAt(4);
                     return  ascii > 60;
                 })
+                .distinct()
                 .forEach(n -> {
                     String finalResult = n.substring(4, n.length());
                     System.out.println(finalResult);
@@ -75,7 +77,12 @@ public class Main {
                 count++;
         }
 
-        System.out.println("The Average count for all errors is: " + sum/count);
+        System.out.println("\n\n\nThe Average count for all errors is: " + sum/count);
+
+
+        System.out.println(sum);
+
+
 
 
     }
