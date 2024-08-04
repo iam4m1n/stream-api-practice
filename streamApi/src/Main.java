@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -22,105 +24,78 @@ public class Main {
 
         String result;
 
-        List<String> data = new ArrayList<>();
+//        List<String> data = new ArrayList<>();
+        List<Error> data = new ArrayList<>();
 
         while ((result = br.readLine())!= null){
-//            System.out.println(result);
-            data.add(result);
+            data.add(new Error(Integer.parseInt(result.split(" ")[0]), result.split(" ")[1]));
         }
 
-//        System.out.println(data);
-
         System.out.println("\n\nList of all responses:\n");
-        data.stream()
-                .filter((String str) -> {
-                    int ascii =  str.charAt(4);
-                    return  ascii > 60;
-                })
+        List<String> task1 = data.stream()
                 .distinct()
-                .forEach(n -> {
-                    String finalResult = n.substring(4, n.length());
-                    System.out.println(finalResult);
-                });
+                .map( n -> n.errorDetail).collect(Collectors.toList());
+
+        System.out.println(task1);
 
 
         System.out.println("\n\n\nall errors in range of 400:\n");
-        data.stream()
-                .filter((String str) -> {
-                    int temp = str.charAt(0);
-                    return temp == 52;
-                }).distinct().forEach(n -> System.out.println(n));
+        List<Integer> task2 = data.stream()
+                .filter(err -> err.errorNumber > 399 && err.errorNumber<500)
+                .map(n -> n.errorNumber)
+                .distinct()
+                .collect(Collectors.toList());
+
+        System.out.println(task2);
+
 
 
         System.out.println("\n\n\nError Codes Count:\n");
-        data.stream().distinct().forEach((String str) -> {
-            long count = data.stream().filter(num -> num.substring(0, 3).equals(str.substring(0, 3))).count();
-            System.out.println("Number of " + str.substring(0, 4) + ": " + count);
-        });
+
+        Map<Integer, Long> itemCount = data.stream().distinct()
+                .collect(Collectors.groupingBy(e -> e.errorNumber, Collectors.counting()));
+
+        itemCount.forEach((k, c) -> System.out.println("Number of " + k + " : " + c));
 
 
+        double all = itemCount.values().stream().mapToInt(Long::intValue).sum();
+        double tedad = itemCount.values().size();
 
-
-        int[] arr = convertStreamToArray(data.stream().map((String str) -> {
-            return Integer.parseInt(str.substring(0, 3));
-        }));
-        int[] cpe = new int[200];
-        double sum = 0;
-        double count = 0;
-        for (int i = 0; i < arr.length; i++) {
-            cpe[arr[i] - 400]++;
-        }
-
-        for (int i = 0; i < cpe.length; i++) {
-            if(cpe[i] != 0) {
-                sum += cpe[i];
-                count++;
-            }
-        }
-
-        double Avg = sum/count;
+        double Avg = all/tedad;
 
         System.out.println("\n\n\nThe Average count for all errors is: " + Avg);
 
-
         System.out.println("\nList of all errors above avg:\n");
-        data.stream().distinct().forEach((String str) -> {
-            long count2 = data.stream().filter(num -> num.substring(0, 3).equals(str.substring(0, 3))).count();
-            if(count2 > Avg)
-                System.out.println(str.substring(0, 3));
-        });
 
+        List <Integer> task5 = itemCount.entrySet()
+                .stream().
+                map( n -> n.toString())
+                .filter( (String n) -> Integer.parseInt(n.split("=")[1]) > Avg)
+                .map( n -> Integer.parseInt(n.split("=")[0]))
+                .collect(Collectors.toList());
 
-
-
-
-
-
-
-
-
-
-
+        System.out.println(task5);
 
 
         System.out.println("\n\n\nErrors in range of 400:\n");
-        data.stream()
-                .distinct()
-                .filter(n -> Integer.parseInt(n.substring(0, 3)) > 399 && Integer.parseInt(n.substring(0, 3)) < 500)
-                .forEach(n -> {
-                    String finalResult = n.substring(4, n.length());
-                    System.out.println(finalResult);
-                });
+        List<String> task400Range = data.stream()
+                .filter(n -> n.errorNumber > 399 && n.errorNumber < 500)
+                .map( n -> n.errorDetail)
+                .collect(Collectors.toList());
+
+        System.out.println(task400Range);
+
 
 
         System.out.println("\n\n\nErrors in range of 500:\n");
-        data.stream()
-                .distinct()
-                .filter(n -> Integer.parseInt(n.substring(0, 3)) > 499 && Integer.parseInt(n.substring(0, 3)) < 600)
-                .forEach(n -> {
-                    String finalResult = n.substring(4, n.length());
-                    System.out.println(finalResult);
-                });
+        List<String> task500Range = data.stream()
+                .filter(n -> n.errorNumber > 499 && n.errorNumber < 600)
+                .map( n -> n.errorDetail)
+                .collect(Collectors.toList());
+
+        System.out.println(task500Range);
+
+
 
 
 
