@@ -31,7 +31,7 @@ public class Main {
 
 //        System.out.println(data);
 
-        System.out.println("List of all responses:");
+        System.out.println("\n\nList of all responses:\n");
         data.stream()
                 .filter((String str) -> {
                     int ascii =  str.charAt(4);
@@ -44,17 +44,17 @@ public class Main {
                 });
 
 
-        System.out.println("\n\n\nall errors in range of 400:");
+        System.out.println("\n\n\nall errors in range of 400:\n");
         data.stream()
                 .filter((String str) -> {
                     int temp = str.charAt(0);
                     return temp == 52;
-                }).forEach(n -> System.out.println(n));
+                }).distinct().forEach(n -> System.out.println(n));
 
 
-        System.out.println("\n\n\nError Codes Count:");
-        data.stream().forEach((String str) -> {
-            long count = data.stream().filter(num -> num.substring(0, 4).equals(str.substring(0, 4))).count();
+        System.out.println("\n\n\nError Codes Count:\n");
+        data.stream().distinct().forEach((String str) -> {
+            long count = data.stream().filter(num -> num.substring(0, 3).equals(str.substring(0, 3))).count();
             System.out.println("Number of " + str.substring(0, 4) + ": " + count);
         });
 
@@ -72,15 +72,55 @@ public class Main {
         }
 
         for (int i = 0; i < cpe.length; i++) {
-            sum += cpe[i];
-            if(cpe[i] != 0)
+            if(cpe[i] != 0) {
+                sum += cpe[i];
                 count++;
+            }
         }
 
-        System.out.println("\n\n\nThe Average count for all errors is: " + sum/count);
+        double Avg = sum/count;
+
+        System.out.println("\n\n\nThe Average count for all errors is: " + Avg);
 
 
-        System.out.println(sum);
+        System.out.println("\nList of all errors above avg:\n");
+        data.stream().distinct().forEach((String str) -> {
+            long count2 = data.stream().filter(num -> num.substring(0, 3).equals(str.substring(0, 3))).count();
+            if(count2 > Avg)
+                System.out.println(str.substring(0, 3));
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        System.out.println("\n\n\nErrors in range of 400:\n");
+        data.stream()
+                .distinct()
+                .filter(n -> Integer.parseInt(n.substring(0, 3)) > 399 && Integer.parseInt(n.substring(0, 3)) < 500)
+                .forEach(n -> {
+                    String finalResult = n.substring(4, n.length());
+                    System.out.println(finalResult);
+                });
+
+
+        System.out.println("\n\n\nErrors in range of 500:\n");
+        data.stream()
+                .distinct()
+                .filter(n -> Integer.parseInt(n.substring(0, 3)) > 499 && Integer.parseInt(n.substring(0, 3)) < 600)
+                .forEach(n -> {
+                    String finalResult = n.substring(4, n.length());
+                    System.out.println(finalResult);
+                });
 
 
 
